@@ -1,3 +1,4 @@
+package src;
 /*
  * Notes about Binary Trees
  * Binary Trees are good for performing searches.
