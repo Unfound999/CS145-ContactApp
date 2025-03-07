@@ -9,7 +9,7 @@ public class Contact implements Comparable<Contact> {
     private String email;
 
     //  assigns an integer value to the first letter of the first name of the inputted object and current object
-    //  compares these two values and returns a value based on 
+    //  compares these two values and returns a value based on this comparison
     @Override
     public int compareTo(Contact inputName) {
 
