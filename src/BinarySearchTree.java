@@ -11,7 +11,7 @@ package src;
  * No duplicates are allowed.
  */
 
- import java.util.Stack;
+import java.util.Stack;
 
 public class BinarySearchTree<T extends Comparable<? super T>> {
 
@@ -113,12 +113,29 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
     public BinaryTreeNode<T> getInOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
+        BinaryTreeNode<T> currNode = root;
+        while(currNode != null){
+            nodeStack.push(currNode);
+            currNode = currNode.getLeft();
+        } // Descend fully to the left.
 
+        while(!nodeStack.empty()){
+            currNode = nodeStack.pop();
+            if(currNode.getValue().equals(value)){
+                return currNode;
+            }
+            if(currNode.getRight() != null){
+                nodeStack.push(currNode.getRight());
+            }
+            if (currNode.getLeft() != null){
+                nodeStack.push(currNode.getLeft());
+            }
+        }
         throw new UnsupportedOperationException();
     }
 
     public BinaryTreeNode<T> getPostOrder(T value){
-        BinaryTreeNode<T> parent = root;
+
         throw new UnsupportedOperationException();
     }
 
@@ -168,6 +185,21 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
             removeNode.setLeft(leftNode.getLeft());
             removeNode = removeNode.getLeft();
         }
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.add(5);
+        tree.add(4);
+        tree.add(3);
+        tree.add(2);
+        tree.add(7);
+        tree.add(6);
+        tree.add(8);
+        tree.add(9);
+
+        BinaryTreeNode<Integer> x = tree.getNode(7, SearchType.PREORDER);
+        System.out.println(x.getValue());
     }
 }
 
