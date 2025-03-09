@@ -113,30 +113,41 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
     public BinaryTreeNode<T> getInOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
-        BinaryTreeNode<T> currNode = root;
-        while(currNode != null){
-            nodeStack.push(currNode);
-            currNode = currNode.getLeft();
-        } // Descend fully to the left.
+        BinaryTreeNode<T> currNode = root;  // Start at our first node.
 
-        while(!nodeStack.empty()){
+        while(currNode != null || !nodeStack.empty()){
+
+            // Loop through the the left most node of each branch. Note that all we're doing here is digging, not processing.
+            // Each node we're processing, we dig again on. That's why it's at the top of the first loop.
+            while (currNode != null) {
+                nodeStack.push(currNode);
+                currNode = currNode.getLeft();
+            }
+
+            // Finally, we start processing the nodes.  We get the first node off the stack, and check if it's value is what we're looking for.
             currNode = nodeStack.pop();
             if(currNode.getValue().equals(value)){
                 return currNode;
             }
-            if(currNode.getRight() != null){
-                nodeStack.push(currNode.getRight());
-            }
-            if (currNode.getLeft() != null){
-                nodeStack.push(currNode.getLeft());
-            }
+
+            // If it's not the node we're looking for, we move onto it's right sibling.
+            currNode = currNode.getRight();
         }
-        throw new UnsupportedOperationException();
+
+        throw new NodeNotFoundException();
     }
 
     public BinaryTreeNode<T> getPostOrder(T value){
-
-        throw new UnsupportedOperationException();
+        Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
+        BinaryTreeNode<T> currNode = root;
+        while(currNode != null){
+            nodeStack.push(currNode);
+            currNode = currNode.getLeft();
+        }
+        while(!nodeStack.empty()){
+            
+        }
+        throw new NodeNotFoundException();
     }
 
 
@@ -190,15 +201,14 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     public static void main(String[] args) {
         BinarySearchTree<Integer> tree = new BinarySearchTree<>();
         tree.add(5);
-        tree.add(4);
-        tree.add(3);
-        tree.add(2);
         tree.add(7);
         tree.add(6);
         tree.add(8);
-        tree.add(9);
+        tree.add(3);
+        tree.add(2);
+        tree.add(4);
 
-        BinaryTreeNode<Integer> x = tree.getNode(7, SearchType.PREORDER);
+        BinaryTreeNode<Integer> x = tree.getNode(7, SearchType.INORDER);
         System.out.println(x.getValue());
     }
 }
