@@ -139,13 +139,36 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
     public BinaryTreeNode<T> getPostOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
+        Stack<BinaryTreeNode<T>> parentStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;
-        while(currNode != null){
-            nodeStack.push(currNode);
-            currNode = currNode.getLeft();
-        }
-        while(!nodeStack.empty()){
-            
+
+        // Okay! This is crappy! But it works!
+        // What we do here, is loop through each node, first processing the right nodes,
+        // And then processing the left nodes.
+        // We keep track of the parent nodes to pop back into once we're done processing right-left.
+        while(currNode != null || !nodeStack.empty()){
+            while(currNode != null || !parentStack.empty()){
+                if(!nodeStack.contains(currNode)){
+                    nodeStack.push(currNode); // Push current node, starting with root.
+                }
+                if(currNode.getRight() != null){
+                    parentStack.push(currNode);
+                    currNode = currNode.getRight();
+                    continue;
+                }
+                if(!parentStack.empty()){
+                    currNode = parentStack.pop();
+                    currNode = currNode.getLeft();
+                } else{
+                    currNode = currNode.getLeft(); // If I didn't include this, currNode won't ever equal null, and we'll never meet leave conditions. TODO Fix it.
+                }
+            }
+
+            currNode = nodeStack.pop();
+            if(currNode.getValue() == value) {
+                return currNode;
+            }
+            currNode = null; // Same as above, we need to get into the loop without a value in the stack, and this one works. TODO Fix this as well.
         }
         throw new NodeNotFoundException();
     }
@@ -200,15 +223,23 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
     public static void main(String[] args) {
         BinarySearchTree<Integer> tree = new BinarySearchTree<>();
-        tree.add(5);
+        tree.add(11);
         tree.add(7);
+        tree.add(9);
+        tree.add(5);
+        tree.add(15);
+        tree.add(13);
+        tree.add(17);
+        tree.add(12);
+        tree.add(14);
+        tree.add(18);
+        tree.add(16);
+        tree.add(3);
         tree.add(6);
         tree.add(8);
-        tree.add(3);
-        tree.add(2);
-        tree.add(4);
+        tree.add(10);
 
-        BinaryTreeNode<Integer> x = tree.getNode(7, SearchType.INORDER);
+        BinaryTreeNode<Integer> x = tree.getNode(12, SearchType.POSTORDER);
         System.out.println(x.getValue());
     }
 }
