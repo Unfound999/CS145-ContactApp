@@ -8,6 +8,15 @@ public class Contact implements Comparable<Contact> {
     private int zipCode;
     private String email;
 
+    public Contact(String address, String email, String fName, String lName, String phoneNum, int zipCode) {
+        this.address = address;
+        this.email = email;
+        this.fName = fName;
+        this.lName = lName;
+        this.phoneNum = phoneNum;
+        this.zipCode = zipCode;
+    }
+
     //  assigns an integer value to the first letter of the first name of the inputted object and current object
     //  compares these two values and returns a value based on this comparison
     @Override
