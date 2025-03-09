@@ -158,7 +158,11 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                 }
                 if(!parentStack.empty()){
                     currNode = parentStack.pop();
-                    currNode = currNode.getLeft();
+                    if(currNode.getLeft() != null){
+                        currNode = currNode.getLeft();
+                    } else if (currNode.getRight() != null){
+                        currNode = currNode.getRight();
+                    }
                 } else{
                     currNode = currNode.getLeft(); // If I didn't include this, currNode won't ever equal null, and we'll never meet leave conditions. TODO Fix it.
                 }
@@ -210,9 +214,19 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
-    // Remove and replace with the branch from the *right*.
+    // Remove and replace with the branch from the *left*.
     public void removeNode(T value){
-        BinaryTreeNode<T> removeNode = getNode(value);
+        BinaryTreeNode<T> removeNode = getNode(value, SearchType.POSTORDER);
+        if(removeNode.getLeft() == null){
+            BinaryTreeNode<T> parent = getParentNode(value);
+            if(parent.getLeft() == removeNode){
+                parent.setLeft(null);
+            }
+            if(parent.getRight() == removeNode){
+                parent.setRight(null);
+            }
+            return;
+        }
         while (removeNode != null) {
             BinaryTreeNode<T> leftNode = removeNode.getLeft();
             removeNode.setValue(leftNode.getValue());
@@ -238,6 +252,8 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         tree.add(6);
         tree.add(8);
         tree.add(10);
+
+        tree.removeNode(16);
 
         BinaryTreeNode<Integer> x = tree.getNode(12, SearchType.POSTORDER);
         System.out.println(x.getValue());
