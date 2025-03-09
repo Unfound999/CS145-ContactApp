@@ -14,17 +14,100 @@ public class Contact implements Comparable<Contact> {
     public int compareTo(Contact inputName) {
 
         String chars = "abcdefghijklmnopqrstuvwxyz";
-        String InputNameChar =  Character.toString(inputName.fName.toLowerCase().charAt(0));
+        boolean fNameEnd = false;
+        boolean inputFNameEnd = false;
+        int charCounter = 1;
+        int fNameIndex;
+        int inputFNameIndex;
 
-        int nameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(0)));
-        int inputNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(0)));
+        fNameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(0)));
+        inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(0)));
 
-        if (inputNameIndex < nameIndex) {
+        //  checking if first letters are the same
+        if (inputFNameIndex < fNameIndex) {
             return 1;
-        } else if (inputNameIndex > nameIndex) {
+        } else if (inputFNameIndex < fNameIndex) {
             return -1;
-        } else {
-            return 0;
+        }
+
+        //  runs through all letters in both names one by one, checking if they are the same or not
+        while (true) {
+            try {
+                fNameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(charCounter)));
+            } catch (StringIndexOutOfBoundsException e) {
+                fNameEnd = true;
+            }
+            
+            try {
+                inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(charCounter)));
+            } catch (StringIndexOutOfBoundsException e) {
+                inputFNameEnd = true;
+            }
+
+            if (fNameEnd && inputFNameEnd) {
+                return lNameCompare(inputName);
+            } else if (inputFNameEnd) {
+                return 1;
+            } else if (fNameEnd) {
+                return -1;
+            } else {
+                if (inputFNameIndex > fNameIndex) {
+                    return 1;
+                } else if (inputFNameIndex < fNameIndex) {
+                    return -1;
+                }
+            }
+            charCounter++;
+        }
+    }
+
+    private int lNameCompare(Contact inputName) {
+
+        String chars = "abcdefghijklmnopqrstuvwxyz";
+        boolean lNameEnd = false;
+        boolean inputLNameEnd = false;
+        int charCounter = 1;
+        int lNameIndex;
+        int inputLNameIndex;
+
+        lNameIndex = chars.indexOf(Character.toString(this.lName.toLowerCase().charAt(0)));
+        inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(0)));
+
+        //  checking if first letters are the same
+        if (inputLNameIndex < lNameIndex) {
+            return 1;
+        } else if (inputLNameIndex < lNameIndex) {
+            return -1;
+        }
+
+        //  runs through all letters in both names one by one, checking if they are the same or not
+        while (true) {
+            try {
+                lNameIndex = chars.indexOf(Character.toString(this.lName.toLowerCase().charAt(charCounter)));
+            } catch (StringIndexOutOfBoundsException e) {
+                lNameEnd = true;
+            }
+            
+            try {
+                inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(charCounter)));
+            } catch (StringIndexOutOfBoundsException e) {
+                inputLNameEnd = true;
+            }
+
+            if (lNameEnd && inputLNameEnd) {
+                return 0;
+            } else if (inputLNameEnd) {
+                return 1;
+            } else if (lNameEnd) {
+                return -1;
+            } else {
+                if (inputLNameIndex > lNameIndex) {
+                    return 1;
+                } else if (inputLNameIndex < lNameIndex) {
+                    return -1;
+                }
+            }
+            charCounter++;
         }
     }
 }
