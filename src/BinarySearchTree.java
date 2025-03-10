@@ -70,18 +70,18 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * BinaryTreeNode<T> Method
      * We default to a Pre-Order search, as such this method calls getPreOrder() directly and just returns the result.
      */
-    public BinaryTreeNode<T> getNode(T value){
-        return getPreOrder(value);
+    public T get(T value){
+        return getPreOrder(value).getValue();
     }
 
-    public BinaryTreeNode<T> getNode(T value, SearchType searchType){
+    public T get(T value, SearchType searchType){
         switch (searchType) {
             case PREORDER:
-                return getPreOrder(value);
+                return this.getPreOrder(value).getValue();
             case INORDER:
-                return getInOrder(value);
+                return this.getInOrder(value).getValue();
             case POSTORDER:
-                return getPostOrder(value);
+                return this.getPostOrder(value).getValue();
             default:
                 return null; // Really, really shouldn't ever happen.
         }
@@ -91,7 +91,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * If the parent's value isn't the value we're looking for, check the left nodes until we hit null.
      * If we still haven't hit the value, go and check each right node, doing the same left node check each time.
      */
-    public  BinaryTreeNode<T> getPreOrder(T value){
+    private  BinaryTreeNode<T> getPreOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         nodeStack.push(root);
         while(!nodeStack.empty()){
@@ -111,7 +111,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
-    public BinaryTreeNode<T> getInOrder(T value){
+    private BinaryTreeNode<T> getInOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;  // Start at our first node.
 
@@ -137,7 +137,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
-    public BinaryTreeNode<T> getPostOrder(T value){
+    private BinaryTreeNode<T> getPostOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         Stack<BinaryTreeNode<T>> parentStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;
@@ -216,9 +216,9 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
     // Remove and replace with the branch from the *left*.
     public void removeNode(T value){
-        BinaryTreeNode<T> removeNode = getNode(value, SearchType.POSTORDER);
+        BinaryTreeNode<T> removeNode = this.getPostOrder(value);
         if(removeNode.getLeft() == null){
-            BinaryTreeNode<T> parent = getParentNode(value);
+            BinaryTreeNode<T> parent = this.getParentNode(value);
             if(parent.getLeft() == removeNode){
                 parent.setLeft(null);
             }
@@ -255,8 +255,8 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
         tree.removeNode(16);
 
-        BinaryTreeNode<Integer> x = tree.getNode(12, SearchType.POSTORDER);
-        System.out.println(x.getValue());
+        Integer x = tree.get(12, SearchType.POSTORDER);
+        System.out.println(x);
     }
 }
 
