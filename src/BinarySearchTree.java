@@ -11,7 +11,7 @@ package src;
  * No duplicates are allowed.
  */
 
- import java.util.Stack;
+import java.util.Stack;
 
 public class BinarySearchTree<T extends Comparable<? super T>> {
 
@@ -113,13 +113,68 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
     public BinaryTreeNode<T> getInOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
+        BinaryTreeNode<T> currNode = root;  // Start at our first node.
 
-        throw new UnsupportedOperationException();
+        while(currNode != null || !nodeStack.empty()){
+
+            // Loop through the the left most node of each branch. Note that all we're doing here is digging, not processing.
+            // Each node we're processing, we dig again on. That's why it's at the top of the first loop.
+            while (currNode != null) {
+                nodeStack.push(currNode);
+                currNode = currNode.getLeft();
+            }
+
+            // Finally, we start processing the nodes.  We get the first node off the stack, and check if it's value is what we're looking for.
+            currNode = nodeStack.pop();
+            if(currNode.getValue().equals(value)){
+                return currNode;
+            }
+
+            // If it's not the node we're looking for, we move onto it's right sibling.
+            currNode = currNode.getRight();
+        }
+
+        throw new NodeNotFoundException();
     }
 
     public BinaryTreeNode<T> getPostOrder(T value){
-        BinaryTreeNode<T> parent = root;
-        throw new UnsupportedOperationException();
+        Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
+        Stack<BinaryTreeNode<T>> parentStack = new Stack<>();
+        BinaryTreeNode<T> currNode = root;
+
+        // Okay! This is crappy! But it works!
+        // What we do here, is loop through each node, first processing the right nodes,
+        // And then processing the left nodes.
+        // We keep track of the parent nodes to pop back into once we're done processing right-left.
+        while(currNode != null || !nodeStack.empty()){
+            while(currNode != null || !parentStack.empty()){
+                if(!nodeStack.contains(currNode)){
+                    nodeStack.push(currNode); // Push current node, starting with root.
+                }
+                if(currNode.getRight() != null){
+                    parentStack.push(currNode);
+                    currNode = currNode.getRight();
+                    continue;
+                }
+                if(!parentStack.empty()){
+                    currNode = parentStack.pop();
+                    if(currNode.getLeft() != null){
+                        currNode = currNode.getLeft();
+                    } else if (currNode.getRight() != null){
+                        currNode = currNode.getRight();
+                    }
+                } else{
+                    currNode = currNode.getLeft(); // If I didn't include this, currNode won't ever equal null, and we'll never meet leave conditions. TODO Fix it.
+                }
+            }
+
+            currNode = nodeStack.pop();
+            if(currNode.getValue() == value) {
+                return currNode;
+            }
+            currNode = null; // Same as above, we need to get into the loop without a value in the stack, and this one works. TODO Fix this as well.
+        }
+        throw new NodeNotFoundException();
     }
 
 
@@ -159,15 +214,49 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
-    // Remove and replace with the branch from the *right*.
+    // Remove and replace with the branch from the *left*.
     public void removeNode(T value){
-        BinaryTreeNode<T> removeNode = getNode(value);
+        BinaryTreeNode<T> removeNode = getNode(value, SearchType.POSTORDER);
+        if(removeNode.getLeft() == null){
+            BinaryTreeNode<T> parent = getParentNode(value);
+            if(parent.getLeft() == removeNode){
+                parent.setLeft(null);
+            }
+            if(parent.getRight() == removeNode){
+                parent.setRight(null);
+            }
+            return;
+        }
         while (removeNode != null) {
             BinaryTreeNode<T> leftNode = removeNode.getLeft();
             removeNode.setValue(leftNode.getValue());
             removeNode.setLeft(leftNode.getLeft());
             removeNode = removeNode.getLeft();
         }
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.add(11);
+        tree.add(7);
+        tree.add(9);
+        tree.add(5);
+        tree.add(15);
+        tree.add(13);
+        tree.add(17);
+        tree.add(12);
+        tree.add(14);
+        tree.add(18);
+        tree.add(16);
+        tree.add(3);
+        tree.add(6);
+        tree.add(8);
+        tree.add(10);
+
+        tree.removeNode(16);
+
+        BinaryTreeNode<Integer> x = tree.getNode(12, SearchType.POSTORDER);
+        System.out.println(x.getValue());
     }
 }
 
