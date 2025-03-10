@@ -17,8 +17,15 @@ public class Contact implements Comparable<Contact> {
         this.zipCode = zipCode;
     }
 
-    //  assigns an integer value to the first letter of the first name of the inputted object and current object
-    //  compares these two values and returns a value based on this comparison
+    public Contact(String fName, String lName, String phoneNumb) {
+        this.fName = fName;
+        this.lName = lName;
+        this.phoneNum = phoneNumb;
+    }
+
+    // assigns an integer value to the first letter of the first name of the
+    // inputted object and current object
+    // compares these two values and returns a value based on this comparison
     @Override
     public int compareTo(Contact inputName) {
 
@@ -32,21 +39,22 @@ public class Contact implements Comparable<Contact> {
         fNameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(0)));
         inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(0)));
 
-        //  checking if first letters are the same
+        // checking if first letters are the same
         if (inputFNameIndex < fNameIndex) {
             return 1;
         } else if (inputFNameIndex < fNameIndex) {
             return -1;
         }
 
-        //  runs through all letters in both names one by one, checking if they are the same or not
+        // runs through all letters in both names one by one, checking if they are the
+        // same or not
         while (true) {
             try {
                 fNameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(charCounter)));
             } catch (StringIndexOutOfBoundsException e) {
                 fNameEnd = true;
             }
-            
+
             try {
                 inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(charCounter)));
             } catch (StringIndexOutOfBoundsException e) {
@@ -82,21 +90,22 @@ public class Contact implements Comparable<Contact> {
         lNameIndex = chars.indexOf(Character.toString(this.lName.toLowerCase().charAt(0)));
         inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(0)));
 
-        //  checking if first letters are the same
+        // checking if first letters are the same
         if (inputLNameIndex < lNameIndex) {
             return 1;
         } else if (inputLNameIndex < lNameIndex) {
             return -1;
         }
 
-        //  runs through all letters in both names one by one, checking if they are the same or not
+        // runs through all letters in both names one by one, checking if they are the
+        // same or not
         while (true) {
             try {
                 lNameIndex = chars.indexOf(Character.toString(this.lName.toLowerCase().charAt(charCounter)));
             } catch (StringIndexOutOfBoundsException e) {
                 lNameEnd = true;
             }
-            
+
             try {
                 inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(charCounter)));
             } catch (StringIndexOutOfBoundsException e) {
@@ -118,5 +127,19 @@ public class Contact implements Comparable<Contact> {
             }
             charCounter++;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Contact) {
+            Contact trueObj = (Contact) obj;
+            if (this.fName == trueObj.fName && this.lName == trueObj.lName && this.phoneNum == trueObj.phoneNum) {
+                return true;
+            }
+        }
+        return false;
     }
 }
