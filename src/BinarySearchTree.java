@@ -215,7 +215,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     }
 
     // Remove and replace with the branch from the *left*.
-    public void removeNode(T value){
+    public void remove(T value){
         BinaryTreeNode<T> removeNode = this.getPostOrder(value);
         if(removeNode.getLeft() == null){
             BinaryTreeNode<T> parent = this.getParentNode(value);
@@ -253,7 +253,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         tree.add(8);
         tree.add(10);
 
-        tree.removeNode(16);
+        tree.remove(16);
 
         Integer x = tree.get(12, SearchType.POSTORDER);
         System.out.println(x);
