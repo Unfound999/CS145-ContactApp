@@ -34,7 +34,6 @@ public class ContactMain {
     }
 
     public static void viewContact(BinarySearchTree<Contact> Tree) {
-
         Scanner input = new Scanner(System.in);
 
         System.out.print("Please provide the first name of the contact:");
@@ -47,14 +46,24 @@ public class ContactMain {
         String pNum = input.nextLine();
 
         Contact Guy = new Contact(fName, lName, pNum);
-
-        Tree.getNode(Guy);
-
-        Tree.getClass().pri;
+        Guy = Tree.get(Guy);
+        System.out.println(Guy);
     }
 
     public static void removeContact(BinarySearchTree<Contact> Tree) {
+        Scanner input = new Scanner(System.in);
 
+        System.out.print("Please provide the first name of the contact:");
+        String fName = input.nextLine();
+
+        System.out.print("Please provide the last name of the contact:");
+        String lName = input.nextLine();
+
+        System.out.print("Please provide the phone number of the contact:");
+        String pNum = input.nextLine();
+
+        Contact Guy = new Contact(fName, lName, pNum);
+        Guy = Tree.remove(Guy);
     }
 
     public static void viewAllContacts(BinarySearchTree<Contact> Tree) {
