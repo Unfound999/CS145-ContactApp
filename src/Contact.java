@@ -142,4 +142,9 @@ public class Contact implements Comparable<Contact> {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return String.format("\"Name: %s %s, Email: %s, Phone: %s, Address: %s, Zip: %d\"", fName, lName, email, phoneNum, address, zipCode);
+    }
 }
