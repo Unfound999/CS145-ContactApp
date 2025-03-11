@@ -1,9 +1,21 @@
 package src;
+import java.util.ArrayList;
 import java.util.Scanner;
 public class ContactMain {
 
     public static void main(String[] args) {
-
+        Scanner input = new Scanner(System.in);
+        BinarySearchTree<Contact> Tree = new BinarySearchTree<Contact>();
+        System.out.print("Please enter which option you would like!:");
+        System.out.print("Options include: \"AC\" to add a contact, \"VC\" to view a contact \"RC\" to remove a contact, and \"VAC\" to view all contacts.");
+        String answer = input.nextLine();
+        
+        switch(answer) {
+            case "AC": addContactMain(Tree);
+            case "VS": viewContact(Tree);
+            case "RC": removeContact(Tree);
+            case "VAC": viewAllContacts(Tree);
+        }
     }
 
     public static void addContactMain(BinarySearchTree<Contact> Tree) {
@@ -69,17 +81,10 @@ public class ContactMain {
 
     public static void viewAllContacts(BinarySearchTree<Contact> Tree) {
 
-        Scanner input = new Scanner(System.in);
+        ArrayList<Contact> allPeople = Tree.getAllInOrder();
 
-        System.out.print("Please provide the first name of the contact:");
-        String fName = input.nextLine();
-
-        System.out.print("Please provide the last name of the contact:");
-        String lName = input.nextLine();
-
-        System.out.print("Please provide the phone number of the contact:");
-        String pNum = input.nextLine();
-
-        Contact Guy = new Contact(fName, lName, pNum);
+        for (Contact person : allPeople) {
+            System.out.println(person);
+        }
     }
 }
