@@ -1,4 +1,12 @@
+/*
+ * Authors: Christopher Waschke, Brody Weinkauf, Jackson Jenks
+ * Assignment: Week 9 - Binary Search Trees
+ * Description: Contact Application Using Binary Search Tree
+ */
+
+
 package src;
+
 /*
  * Notes about Binary Trees
  * Binary Trees are good for performing searches.
@@ -14,30 +22,50 @@ package src;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/*
+ * A Generic BinarySearchTree Class.
+ * Type T must extend Comparable as to be used in the sorting of new nodes.
+ */
 public class BinarySearchTree<T extends Comparable<? super T>> {
 
+    /*
+     * Enum SearchType
+     * Used to decide what type of traversal in the get method.
+     */
     enum SearchType{
         PREORDER,
         INORDER,
-        POSTORDER;
+        POSTORDER,
+        SEARCH;
     }
 
-    private BinaryTreeNode<T> root;
+    private BinaryTreeNode<T> root; // The root Node of our Binary Tree.
 
-    // Initialize with no root value.
+    /*
+     * Constructor Method
+     * 
+     * Creates a new BinarySearchTree, without an initial value for the root.
+     */
     public BinarySearchTree() {
         root = null;
     }
 
-    // Initialize with a starting value.
+    /*
+     * Constructor Method
+     * 
+     * Constructs a new BinarySearchTree object with an inital value for the root.
+     */
     public BinarySearchTree(T value) {
         root = new BinaryTreeNode<>(value);
     }
 
     
-    /*
+    /* 
      * Void Method
-     * Adds a node to the tree, at the proper location. Sets to root if root doesn't already exist.
+     * If the tree was initialized without a value, it sets the root to the new Node with value T.
+     * Otherwise this method uses the traditonal binary search method to add a node to the tree.
+     * We added weights to the values of the First and Last names in the Contact class, which are used here to decide where to find the node.
+     * In a general since, this class, as it's generic, simply compares the two values till it find the right node to append our name to.
      */
     public void add(T newData){
         if(root == null){
@@ -70,11 +98,21 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     /*
      * BinaryTreeNode<T> Method
      * We default to a Pre-Order search, as such this method calls getPreOrder() directly and just returns the result.
+     * 
+     * Parameters:
+     * value (T) The value we're finding for.
      */
     public T get(T value){
         return getPreOrder(value).getValue();
     }
 
+    /*
+     * OverLode of T get Method
+     * This is just a switch case front-end to our internal different methods of traversal.
+     * Parameters:
+     *   value (T) The value we're finding for.
+     *   searchType (SearchType Enum) The type of tree traversal desired to find the node.
+     */
     public T get(T value, SearchType searchType){
         switch (searchType) {
             case PREORDER:
@@ -83,14 +121,49 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                 return this.getInOrder(value).getValue();
             case POSTORDER:
                 return this.getPostOrder(value).getValue();
+            case SEARCH:
+                return this.getSearch(value).getValue();
             default:
                 return null; // Really, really shouldn't ever happen.
         }
     }
-    //Debug: (11) root->left->left-right-left
+
+    /* BinaryTreeMethod<T> 
+     * This method uses the traditonal binary search method to find a node in the tree.
+     * We added weights to the values of the First and Last names in the Contact class, which are used here to decide where to find the node.
+     * In a general since, this class, as it's generic, simply compares the two values till it find the right node.
+     * 
+     * Parameters:
+     *  value (T) The value we're finding for
+    */
+    public BinaryTreeNode<T> getSearch(T value){
+        BinaryTreeNode<T> current = root;
+        while(current != null){
+            int compareVal = current.getValue().compareTo(value);
+            if(compareVal == 0){
+                return current;
+            }
+            if(compareVal > 0){
+                current = current.getLeft();
+            }
+            if(compareVal < 0){
+                current = current.getRight();
+            }
+        }
+        throw new NodeNotFoundException();
+    }
+    
     /*
-     * If the parent's value isn't the value we're looking for, check the left nodes until we hit null.
-     * If we still haven't hit the value, go and check each right node, doing the same left node check each time.
+     * BinaryTreeNode<T> method
+     * Traveses the Tree using the Pre-Order traversal style.
+     * First, we create a stack to use as a processing order of nodes.
+     * Unlike the other methods, we start by popping this node, to initally process the root.
+     * If the node isn't the one we are looking for, we add the right child, if it exists, to the stack for processing.
+     * We then add the left child to the tree for processing.
+     * We loop this process until we have searched every node in the tree for the value we are looking for.
+     * 
+     * Parameters:
+     *   value (T) The value we're finding for
      */
     private  BinaryTreeNode<T> getPreOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
@@ -112,6 +185,18 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
+
+    /*
+     * BinaryTreeNode<T> method
+     * Traverses the Binary Tree using the In Order traversal pattern. (Left->Root->Right)
+     * We dig through the nodes to the furthest left node. Adding each node to the stack as we go.
+     * Once we're at the bottom, we process the left most node. Then we process the center. Finally, we change currNode to the right most node.
+     * This will re-trigger our digging, if the node has left children, restarting the process.
+     * We do this process until we found the node that we are looking for, which will be returned.
+     * 
+     * Parameters:
+     *  value (T) The value we're finding for
+     */
     private BinaryTreeNode<T> getInOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;  // Start at our first node.
@@ -138,6 +223,11 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
+    /*
+     * ArrayList<T> method
+     * This method is the exact same as the method above, except instead of looking for any single node,
+     * We travel everyone adding each to an ArrayList to be returned later. Used for viewing every entry in the tree.
+     */
     public  ArrayList<T> getAllInOrder(){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;  // Start at our first node.
@@ -168,13 +258,15 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * We use two stacks to keep track the nodes that will be processed, once we leave finding the nodes
      * And the use a seperate stack, to keep track of which nodes are parent nodes, to be able to process and find the nodes to left
      * After finding the nodes to the right. (Result in left->right->top when popped.)
+     * 
+     * Parameters:
+     *  value (T): The value of the node we're looking for.
      */
     private BinaryTreeNode<T> getPostOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         Stack<BinaryTreeNode<T>> parentStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;
 
-        // Okay! This is crappy! But it works!
         // What we do here, is loop through each node, first processing the right nodes,
         // And then processing the left nodes.
         // We keep track of the parent nodes to pop back into once we're done processing right-left.
@@ -196,20 +288,28 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                         currNode = currNode.getRight();
                     }
                 } else{
-                    currNode = currNode.getLeft(); // If I didn't include this, currNode won't ever equal null, and we'll never meet leave conditions. TODO Fix it.
+                    currNode = null; // Set currNode to null, exiting the loop.
                 }
             }
 
+            // Process the nodes, popping each of the stack. This will only be reached after processing the node's children, if it has any. 
             currNode = nodeStack.pop();
-            if(currNode.getValue() == value) {
+            if(currNode.getValue().equals(value)) {
                 return currNode;
             }
-            currNode = null; // Same as above, we need to get into the loop without a value in the stack, and this one works. TODO Fix this as well.
+            currNode = null; // Set currNode to null, exiting the loop.
         }
         throw new NodeNotFoundException();
     }
 
 
+    /*
+     * Boolean Method
+     * Using the Search style, return if the desired value is in the tree.
+     * 
+     * Parameters:
+     *  value (T): The value of the node we're looking for.
+     */
     public Boolean contains(T value){
         BinaryTreeNode<T> current = root;
         while(current != null){
@@ -227,7 +327,14 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
-    public BinaryTreeNode<T> getParentNode(T value){
+    /*
+     * BinrayTreeNode<T> method.
+     * Private Method.
+     * Returns the node that is the parent of the value we're looking for. Used in removing.
+     * Parameters:
+     *  value (T): The value of the node we're looking for.
+     */
+    private BinaryTreeNode<T> getParentNode(T value){
         BinaryTreeNode<T> parent = null;
         BinaryTreeNode<T> current = root;
         while(current != null){
@@ -246,7 +353,13 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
-    // Remove and replace with the branch from the *left*.
+    /*
+     * Void Method
+     * Removes a tree from the Binary Tree node.
+     * Shifts every the left branch into the current value, while removing the current value.
+     * Parameters:
+     * value (T): The value of the node we're looking for.
+     */
     public void remove(T value){
         BinaryTreeNode<T> removeNode = this.getPostOrder(value);
         if(removeNode.getLeft() == null){
@@ -268,22 +381,14 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     }
 
     public static void main(String[] args) {
-        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
-        tree.add(11);
-        tree.add(7);
-        tree.add(9);
-        tree.add(5);
-        tree.add(15);
-        tree.add(13);
-        tree.add(17);
-        tree.add(12);
-        tree.add(14);
-        tree.add(18);
-        tree.add(16);
-        tree.add(3);
-        tree.add(6);
-        tree.add(8);
-        tree.add(10);
+        BinarySearchTree<Contact> contactTree = new BinarySearchTree<Contact>();
+        contactTree.add(new Contact("5410 Waschke Road", "chrisdwaschke@gmail.com", "Chris", "Waschke", "3605948270", 98226));
+        contactTree.add(new Contact("5555 Smith Road", "jackson@idontknow.com", "Jackson", "Jenks", "360-555-5555", 98226));
+        contactTree.add(new Contact("5555 John Road", "brody@idontknow.com", "Brody", "Weinkauf", "360-555-5554", 98226));
+        contactTree.add(new Contact("5555 Test Road", "snorp08@gmail.com", "Chriss", "Wasschke", "360-555-5542", 9226));
+        BinaryTreeNode<Contact> x = contactTree.getSearch(new Contact("Jackson", "Jenks", "360-555-5555"));
+        System.out.println(x.getValue());
+            
     }
 }
 
