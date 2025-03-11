@@ -40,9 +40,9 @@ public class Contact implements Comparable<Contact> {
         inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(0)));
 
         // checking if first letters are the same
-        if (inputFNameIndex > fNameIndex) {
+        if (inputFNameIndex < fNameIndex) {
             return 1;
-        } else if (inputFNameIndex < fNameIndex) {
+        } else if (inputFNameIndex > fNameIndex) {
             return -1;
         }
 
@@ -91,9 +91,9 @@ public class Contact implements Comparable<Contact> {
         inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(0)));
 
         // checking if first letters are the same
-        if (inputLNameIndex > lNameIndex) {
+        if (inputLNameIndex < lNameIndex) {
             return 1;
-        } else if (inputLNameIndex < lNameIndex) {
+        } else if (inputLNameIndex > lNameIndex) {
             return -1;
         }
 
