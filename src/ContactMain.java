@@ -7,15 +7,20 @@ public class ContactMain {
         Scanner input = new Scanner(System.in);
         BinarySearchTree<Contact> Tree = new BinarySearchTree<Contact>();
         System.out.print("Please enter which option you would like!:");
-        System.out.print("Options include: \"AC\" to add a contact, \"VC\" to view a contact \"RC\" to remove a contact, and \"VAC\" to view all contacts.");
+        System.out.print("Options include: \"AC\" to add a contact, \"VC\" to view a contact \"RC\" to remove a contact, \"VAC\" to view all contacts, or \"Q\" to quit!.");
         String answer = input.nextLine();
+        boolean running = true;
+        do {
+            switch(answer) {
+                case "AC": addContactMain(Tree); break;
+                case "VS": viewContact(Tree); break;
+                case "RC": removeContact(Tree); break;
+                case "VAC": viewAllContacts(Tree); break;
+                case "Q": running = false; break;
+                default: System.out.println("This is not a valid option!"); break;
+            }
+        } while (running);
         
-        switch(answer) {
-            case "AC": addContactMain(Tree);
-            case "VS": viewContact(Tree);
-            case "RC": removeContact(Tree);
-            case "VAC": viewAllContacts(Tree);
-        }
     }
 
     public static void addContactMain(BinarySearchTree<Contact> Tree) {
