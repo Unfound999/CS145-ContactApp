@@ -379,17 +379,6 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
             removeNode = removeNode.getLeft();
         }
     }
-
-    public static void main(String[] args) {
-        BinarySearchTree<Contact> contactTree = new BinarySearchTree<Contact>();
-        contactTree.add(new Contact("5410 Waschke Road", "chrisdwaschke@gmail.com", "Chris", "Waschke", "3605948270", 98226));
-        contactTree.add(new Contact("5555 Smith Road", "jackson@idontknow.com", "Jackson", "Jenks", "360-555-5555", 98226));
-        contactTree.add(new Contact("5555 John Road", "brody@idontknow.com", "Brody", "Weinkauf", "360-555-5554", 98226));
-        contactTree.add(new Contact("5555 Test Road", "snorp08@gmail.com", "Chriss", "Wasschke", "360-555-5542", 9226));
-        BinaryTreeNode<Contact> x = contactTree.getSearch(new Contact("Jackson", "Jenks", "360-555-5555"));
-        System.out.println(x.getValue());
-            
-    }
 }
 
 
