@@ -6,11 +6,11 @@ public class ContactMain {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         BinarySearchTree<Contact> Tree = new BinarySearchTree<Contact>();
-        System.out.print("Please enter which option you would like!:");
-        System.out.print("Options include: \"AC\" to add a contact, \"VC\" to view a contact \"RC\" to remove a contact, \"VAC\" to view all contacts, or \"Q\" to quit!.");
-        String answer = input.nextLine();
         boolean running = true;
         do {
+            System.out.print("Please enter which option you would like!:");
+            System.out.print("Options include: \"AC\" to add a contact, \"VC\" to view a contact \"RC\" to remove a contact, \"VAC\" to view all contacts, or \"Q\" to quit!.");
+            String answer = input.nextLine();
             switch(answer) {
                 case "AC": addContactMain(Tree); break;
                 case "VS": viewContact(Tree); break;
