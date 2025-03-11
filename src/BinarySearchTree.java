@@ -11,6 +11,7 @@ package src;
  * No duplicates are allowed.
  */
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class BinarySearchTree<T extends Comparable<? super T>> {
@@ -137,6 +138,37 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         throw new NodeNotFoundException();
     }
 
+    public  ArrayList<T> getAllInOrder(){
+        Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
+        BinaryTreeNode<T> currNode = root;  // Start at our first node.
+        ArrayList<T> allNodeValues = new ArrayList<>();
+
+        while(currNode != null || !nodeStack.empty()){
+
+            // Loop through the the left most node of each branch. Note that all we're doing here is digging, not processing.
+            // Each node we're processing, we dig again on. That's why it's at the top of the first loop.
+            while (currNode != null) {
+                nodeStack.push(currNode);
+                currNode = currNode.getLeft();
+            }
+
+            // Finally, we start processing the nodes.  We get the first node off the stack, and check if it's value is what we're looking for.
+            currNode = nodeStack.pop();
+            allNodeValues.add(currNode.getValue());
+
+            // If it's not the node we're looking for, we move onto it's right sibling.
+            currNode = currNode.getRight();
+        }
+        return allNodeValues;
+    }
+
+    /*
+     * BinaryTreeNode<T> method
+     * Traverses the tree using the Post Order traversal method.
+     * We use two stacks to keep track the nodes that will be processed, once we leave finding the nodes
+     * And the use a seperate stack, to keep track of which nodes are parent nodes, to be able to process and find the nodes to left
+     * After finding the nodes to the right. (Result in left->right->top when popped.)
+     */
     private BinaryTreeNode<T> getPostOrder(T value){
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         Stack<BinaryTreeNode<T>> parentStack = new Stack<>();
@@ -252,11 +284,6 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         tree.add(6);
         tree.add(8);
         tree.add(10);
-
-        tree.remove(16);
-
-        Integer x = tree.get(12, SearchType.POSTORDER);
-        System.out.println(x);
     }
 }
 
