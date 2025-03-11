@@ -161,7 +161,7 @@ public class Contact implements Comparable<Contact> {
         //  checks if first name, last name, and phone numbers between the two objects are the same
         if (obj instanceof Contact) {
             Contact trueObj = (Contact) obj;
-            if (this.fName == trueObj.fName && this.lName == trueObj.lName && this.phoneNum == trueObj.phoneNum) {
+            if (this.fName.equals(trueObj.fName) && this.lName.equals(trueObj.lName) && this.phoneNum.equals(trueObj.phoneNum)) {
                 return true;
             }
         }
