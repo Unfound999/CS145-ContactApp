@@ -136,7 +136,7 @@ public class Contact implements Comparable<Contact> {
         }
         if (obj instanceof Contact) {
             Contact trueObj = (Contact) obj;
-            if (this.fName == trueObj.fName && this.lName == trueObj.lName && this.phoneNum == trueObj.phoneNum) {
+            if (this.fName.equals(trueObj.fName) && this.lName.equals(trueObj.lName) && this.phoneNum.equals(trueObj.phoneNum)) {
                 return true;
             }
         }
