@@ -35,51 +35,52 @@ public class Contact implements Comparable<Contact> {
     public int compareTo(Contact inputName) {
 
         String chars = "abcdefghijklmnopqrstuvwxyz";
+        String letterCheck;
         boolean fNameEnd = false;
         boolean inputFNameEnd = false;
-        int charCounter = 1;
+        int charCounter = 0;
         int fNameIndex;
         int inputFNameIndex;
 
-        //  grabs value of first letter of both first names
-        fNameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(0)));
-        inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(0)));
-
-        // checks if first letters in both first names are the same
-        if (inputFNameIndex < fNameIndex) {
-            return 1;
-        } else if (inputFNameIndex > fNameIndex) {
-            return -1;
-        }
-
         // runs through every letter in both names until there is a differing character, a name ends, or both names have the same amount of same letters.
         while (true) {
-            //  grabs next character, if there are no new characters to grab the first name has ended
+            //  checks next character, if there are no new characters to check the first name has ended
+            //  if the next character is not a letter, return a -1
             try {
-                fNameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(charCounter)));
+                letterCheck = Character.toString(this.fName.toLowerCase().charAt(charCounter));
+                if (!letterCheck.matches("[abcdefghijklmnopqrstuvwxyz]")) {
+                    return -1;
+                }
             } catch (StringIndexOutOfBoundsException e) {
                 fNameEnd = true;
             }
 
-            //  grabs next character, if there are no new characters to grab the last name has ended
+            //  checks next character, if there are no new characters to check the last name has ended
+            //  if the next character is not a letter, return a -1
             try {
-                inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(charCounter)));
+                letterCheck = Character.toString(inputName.fName.toLowerCase().charAt(charCounter));
+                if (!letterCheck.matches("[abcdefghijklmnopqrstuvwxyz]")) {
+                    return -1;
+                }
             } catch (StringIndexOutOfBoundsException e) {
                 inputFNameEnd = true;
             }
 
+            
             //  checks if either of the names have ended and then checks if the individual characters are the same
             //  if both first names are the same, call lNameCompare method
             if (fNameEnd && inputFNameEnd) {
                 return lNameCompare(inputName);
             } else if (inputFNameEnd) {
-                return 1;
-            } else if (fNameEnd) {
                 return -1;
+            } else if (fNameEnd) {
+                return 1;
             } else {
-                if (inputFNameIndex > fNameIndex) {
+                fNameIndex = chars.indexOf(Character.toString(this.fName.toLowerCase().charAt(charCounter)));
+                inputFNameIndex = chars.indexOf(Character.toString(inputName.fName.toLowerCase().charAt(charCounter)));
+                if (inputFNameIndex < fNameIndex) {
                     return 1;
-                } else if (inputFNameIndex < fNameIndex) {
+                } else if (inputFNameIndex > fNameIndex) {
                     return -1;
                 }
             }
@@ -95,51 +96,50 @@ public class Contact implements Comparable<Contact> {
     private int lNameCompare(Contact inputName) {
 
         String chars = "abcdefghijklmnopqrstuvwxyz";
+        String letterCheck;
         boolean lNameEnd = false;
         boolean inputLNameEnd = false;
         int charCounter = 1;
         int lNameIndex;
         int inputLNameIndex;
 
-        //  grabs value of first letter of both first names
-        lNameIndex = chars.indexOf(Character.toString(this.lName.toLowerCase().charAt(0)));
-        inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(0)));
-
-        // checks if first letters in both first names are the same
-        if (inputLNameIndex < lNameIndex) {
-            return 1;
-        } else if (inputLNameIndex > lNameIndex) {
-            return -1;
-        }
-
         // runs through every letter in both names until there is a differing character, a name ends, or both names have the same amount of same letters.
         while (true) {
-            //  grabs next character, if there are no new characters to grab the first name has ended
+            //  checks next character, if there are no new characters to check the first name has ended
             try {
-                lNameIndex = chars.indexOf(Character.toString(this.lName.toLowerCase().charAt(charCounter)));
+                letterCheck = Character.toString(this.lName.toLowerCase().charAt(charCounter));
+                if (!letterCheck.matches("[abcdefghijklmnopqrstuvwxyz]")) {
+                    return -1;
+                }            
             } catch (StringIndexOutOfBoundsException e) {
                 lNameEnd = true;
             }
 
-            //  grabs next character, if there are no new characters to grab the last name has ended
+            //  checks next character, if there are no new characters to check the last name has ended
             try {
-                inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(charCounter)));
+                letterCheck = Character.toString(inputName.lName.toLowerCase().charAt(charCounter));
+                if (!letterCheck.matches("[abcdefghijklmnopqrstuvwxyz]")) {
+                    return -1;
+                }
             } catch (StringIndexOutOfBoundsException e) {
                 inputLNameEnd = true;
             }
 
+            
             //  checks if either of the names have ended and then checks if the individual characters are the sam
             //  if both last names are the same, return a 0 value
             if (lNameEnd && inputLNameEnd) {
                 return 0;
             } else if (inputLNameEnd) {
-                return 1;
-            } else if (lNameEnd) {
                 return -1;
+            } else if (lNameEnd) {
+                return 1;
             } else {
-                if (inputLNameIndex > lNameIndex) {
+                lNameIndex = chars.indexOf(Character.toString(this.lName.toLowerCase().charAt(charCounter)));
+                inputLNameIndex = chars.indexOf(Character.toString(inputName.lName.toLowerCase().charAt(charCounter)));
+                if (inputLNameIndex < lNameIndex) {
                     return 1;
-                } else if (inputLNameIndex < lNameIndex) {
+                } else if (inputLNameIndex > lNameIndex) {
                     return -1;
                 }
             }
