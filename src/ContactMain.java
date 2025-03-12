@@ -104,8 +104,12 @@ public class ContactMain {
         String pNum = input.nextLine();
 
         Contact person = new Contact(fName, lName, pNum);
-        Tree.remove(person);
-        System.out.print("Contact Removed!");
+        try {
+            Tree.remove(person);
+            System.out.print("Contact Removed!");
+        } catch (NodeNotFoundException e) {
+            System.err.println("That person doesn't exist");
+        } 
     }
 
     //viewAllContacts is a method that creates a arraylist through the getAllInOrder method, then it loops through a for loop which
