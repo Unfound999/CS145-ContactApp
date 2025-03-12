@@ -6,4 +6,10 @@
 
 package src;
 
-public class NodeNotFoundException extends RuntimeException {}
+/*
+ * NodeNotFoundException Class
+ * Throws when a Node isn't found on the Binary Tree.
+ */
+public class NodeNotFoundException extends RuntimeException {
+
+}
