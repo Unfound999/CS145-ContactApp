@@ -1,5 +1,6 @@
 package src;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ContactMain {
@@ -16,7 +17,7 @@ public class ContactMain {
             String answer = input.nextLine();
             switch(answer) {
                 case "AC": addContactMain(Tree); break;
-                case "VS": viewContact(Tree); break;
+                case "VC": viewContact(Tree); break;
                 case "RC": removeContact(Tree); break;
                 case "VAC": viewAllContacts(Tree); break;
                 case "Q": running = false; break;
@@ -39,8 +40,15 @@ public class ContactMain {
         System.out.print("Please provide the email of the contact:");
         String email = input.nextLine();
 
-        System.out.print("Please provide the zip code of the contact:");
-        int zip = input.nextInt();
+        int zip;
+        while(true)
+            try {
+                System.out.print("Please provide the zip code of the contact:");
+                zip = input.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.print("Sorry this is an invalid zip code!");
+        }   
 
         System.out.print("Please provide the phone number of the contact:");
         String pNum = input.nextLine();
@@ -49,9 +57,13 @@ public class ContactMain {
         String address = input.nextLine();
 
         Contact person = new Contact(address, email, fName, lName, pNum, zip);
-        Tree.add(person);
-
-        System.out.print("Contact Added!");
+        
+        try {
+            Tree.add(person);
+            System.out.print("Contact Added!");
+        } catch (DuplicateNodeException e) {
+            System.out.println("That contact already exists.");
+        }
     }
 
     //ViewContact is a method that asks a person for identifying information about a person. Then it instantiates a contact object
@@ -69,8 +81,12 @@ public class ContactMain {
         String pNum = input.nextLine();
 
         Contact person = new Contact(fName, lName, pNum);
-        person = Tree.get(person);
-        System.out.println(person);
+        try {
+            person = Tree.get(person);
+            System.out.println(person);
+        } catch (NodeNotFoundException e) {
+            System.err.println("That person doesn't exist");
+        } 
     }
 
     //removeContact is a method that asks the user for identifying information and then uses that information to create a
@@ -88,8 +104,12 @@ public class ContactMain {
         String pNum = input.nextLine();
 
         Contact person = new Contact(fName, lName, pNum);
-        Tree.remove(person);
-        System.out.print("Contact Removed!");
+        try {
+            Tree.remove(person);
+            System.out.print("Contact Removed!");
+        } catch (NodeNotFoundException e) {
+            System.err.println("That person doesn't exist");
+        } 
     }
 
     //viewAllContacts is a method that creates a arraylist through the getAllInOrder method, then it loops through a for loop which
