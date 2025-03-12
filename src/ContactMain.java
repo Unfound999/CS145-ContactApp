@@ -13,7 +13,7 @@ public class ContactMain {
         boolean running = true;
         do {
             System.out.print("Please enter which option you would like!:");
-            System.out.print("Options include: \"AC\" to add a contact, \"VC\" to view a contact \"RC\" to remove a contact, \"VAC\" to view all contacts, or \"Q\" to quit!.");
+            System.out.print("Options include: \"AC\" to add a contact\n\"VC\" to view a contact\n\"RC\" to remove a contact\n\"VAC\" to view all contacts\n\"Q\" to quit!\n");
             String answer = input.nextLine();
             switch(answer) {
                 case "AC": addContactMain(Tree); break;
