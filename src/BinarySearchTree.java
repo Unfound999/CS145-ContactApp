@@ -107,7 +107,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     }
 
     /*
-     * OverLode of T get Method
+     * OverLoad of T get Method
      * This is just a switch case front-end to our internal different methods of traversal.
      * Parameters:
      *   value (T) The value we're finding for.
