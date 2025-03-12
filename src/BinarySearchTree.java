@@ -32,7 +32,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Enum SearchType
      * Used to decide what type of traversal in the get method.
      */
-    enum SearchType{
+    public enum SearchType{
         PREORDER,
         INORDER,
         POSTORDER,
@@ -53,7 +53,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     /*
      * Constructor Method
      * 
-     * Constructs a new BinarySearchTree object with an inital value for the root.
+     * Constructs a new BinarySearchTree object with an initial value for the root.
      */
     public BinarySearchTree(T value) {
         root = new BinaryTreeNode<>(value);
@@ -63,7 +63,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     /* 
      * Void Method
      * If the tree was initialized without a value, it sets the root to the new Node with value T.
-     * Otherwise this method uses the traditonal binary search method to add a node to the tree.
+     * Otherwise this method uses the traditional binary search method to add a node to the tree.
      * We added weights to the values of the First and Last names in the Contact class, which are used here to decide where to find the node.
      * In a general since, this class, as it's generic, simply compares the two values till it find the right node to append our name to.
      */
@@ -107,7 +107,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     }
 
     /*
-     * OverLode of T get Method
+     * OverLoad of T get Method
      * This is just a switch case front-end to our internal different methods of traversal.
      * Parameters:
      *   value (T) The value we're finding for.
@@ -129,7 +129,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     }
 
     /* BinaryTreeMethod<T> 
-     * This method uses the traditonal binary search method to find a node in the tree.
+     * This method uses the traditional binary search method to find a node in the tree.
      * We added weights to the values of the First and Last names in the Contact class, which are used here to decide where to find the node.
      * In a general since, this class, as it's generic, simply compares the two values till it find the right node.
      * 
@@ -155,9 +155,9 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     
     /*
      * BinaryTreeNode<T> method
-     * Traveses the Tree using the Pre-Order traversal style.
+     * Traverses the Tree using the Pre-Order traversal style.
      * First, we create a stack to use as a processing order of nodes.
-     * Unlike the other methods, we start by popping this node, to initally process the root.
+     * Unlike the other methods, we start by popping this node, to initially process the root.
      * If the node isn't the one we are looking for, we add the right child, if it exists, to the stack for processing.
      * We then add the left child to the tree for processing.
      * We loop this process until we have searched every node in the tree for the value we are looking for.
@@ -174,12 +174,12 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                 if(currNode.getValue().equals(value)){
                     return currNode;
                 }
-            }
-            if(currNode.getRight() != null){
-                nodeStack.push(currNode.getRight());
-            }
-            if(currNode.getLeft() != null){
-                nodeStack.push(currNode.getLeft());
+                if(currNode.getRight() != null){
+                    nodeStack.push(currNode.getRight());
+                }
+                if(currNode.getLeft() != null){
+                    nodeStack.push(currNode.getLeft());
+                }
             }
         }
         throw new NodeNotFoundException();
@@ -256,7 +256,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * BinaryTreeNode<T> method
      * Traverses the tree using the Post Order traversal method.
      * We use two stacks to keep track the nodes that will be processed, once we leave finding the nodes
-     * And the use a seperate stack, to keep track of which nodes are parent nodes, to be able to process and find the nodes to left
+     * And the use a separate stack, to keep track of which nodes are parent nodes, to be able to process and find the nodes to left
      * After finding the nodes to the right. (Result in left->right->top when popped.)
      * 
      * Parameters:
@@ -328,7 +328,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     }
 
     /*
-     * BinrayTreeNode<T> method.
+     * BinaryTreeNode<T> method.
      * Private Method.
      * Returns the node that is the parent of the value we're looking for. Used in removing.
      * Parameters:
@@ -372,6 +372,8 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
             }
             return;
         }
+
+        // Do the shifting of the values to the left.
         while (removeNode != null) {
             BinaryTreeNode<T> leftNode = removeNode.getLeft();
             removeNode.setValue(leftNode.getValue());
@@ -380,8 +382,3 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         }
     }
 }
-
-
-class DuplicateNodeException extends RuntimeException {}
-
-class NodeNotFoundException extends RuntimeException {}
