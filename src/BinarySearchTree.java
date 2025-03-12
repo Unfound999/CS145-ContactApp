@@ -174,12 +174,12 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                 if(currNode.getValue().equals(value)){
                     return currNode;
                 }
-            }
-            if(currNode.getRight() != null){
-                nodeStack.push(currNode.getRight());
-            }
-            if(currNode.getLeft() != null){
-                nodeStack.push(currNode.getLeft());
+                if(currNode.getRight() != null){
+                    nodeStack.push(currNode.getRight());
+                }
+                if(currNode.getLeft() != null){
+                    nodeStack.push(currNode.getLeft());
+                }
             }
         }
         throw new NodeNotFoundException();
@@ -380,5 +380,27 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
             removeNode.setLeft(leftNode.getLeft());
             removeNode = removeNode.getLeft();
         }
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.add(11);
+        tree.add(7);
+        tree.add(9);
+        tree.add(5);
+        tree.add(15);
+        tree.add(13);
+        tree.add(17);
+        tree.add(12);
+        tree.add(14);
+        tree.add(18);
+        tree.add(16);
+        tree.add(3);
+        tree.add(6);
+        tree.add(8);
+        tree.add(10);
+
+        System.out.println(tree.getPreOrder(17).getValue());
+
     }
 }
