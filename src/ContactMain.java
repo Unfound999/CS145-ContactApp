@@ -1,11 +1,14 @@
 package src;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class ContactMain {
 
+    //Main method uses a menu to handle each option for adding, viewing, removing, viewing all, and quitting. This is done through
+    //a switch case inside of a do while loop.
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        BinarySearchTree<Contact> Tree = new BinarySearchTree<Contact>();
+        BinarySearchTree<Contact> Tree = new BinarySearchTree<>();
         boolean running = true;
         do {
             System.out.print("Please enter which option you would like!:");
@@ -20,9 +23,10 @@ public class ContactMain {
                 default: System.out.println("This is not a valid option!"); break;
             }
         } while (running);
-        
     }
 
+    //addContactMain is a method that asks the user for key information for a contact. Then it creates a contact object with
+    //all provided data and then adds that contact object to the tree with the add method.
     public static void addContactMain(BinarySearchTree<Contact> Tree) {
         Scanner input = new Scanner(System.in);
 
@@ -44,12 +48,14 @@ public class ContactMain {
         System.out.print("Please provide the address of the contact:");
         String address = input.nextLine();
 
-        Contact Guy = new Contact(address, email, fName, lName, pNum, zip);
-        Tree.add(Guy);
+        Contact person = new Contact(address, email, fName, lName, pNum, zip);
+        Tree.add(person);
 
         System.out.print("Contact Added!");
     }
 
+    //ViewContact is a method that asks a person for identifying information about a person. Then it instantiates a contact object
+    //with that info and it gets that person using the tree class with the get method. Lastly it shows the person to the user.
     public static void viewContact(BinarySearchTree<Contact> Tree) {
         Scanner input = new Scanner(System.in);
 
@@ -62,11 +68,13 @@ public class ContactMain {
         System.out.print("Please provide the phone number of the contact:");
         String pNum = input.nextLine();
 
-        Contact Guy = new Contact(fName, lName, pNum);
-        Guy = Tree.get(Guy);
-        System.out.println(Guy);
+        Contact person = new Contact(fName, lName, pNum);
+        person = Tree.get(person);
+        System.out.println(person);
     }
 
+    //removeContact is a method that asks the user for identifying information and then uses that information to create a
+    //contact object. That contact object is then used to remove the person using the tree class with the remove method.
     public static void removeContact(BinarySearchTree<Contact> Tree) {
         Scanner input = new Scanner(System.in);
 
@@ -79,11 +87,13 @@ public class ContactMain {
         System.out.print("Please provide the phone number of the contact:");
         String pNum = input.nextLine();
 
-        Contact Guy = new Contact(fName, lName, pNum);
-        Tree.remove(Guy);
+        Contact person = new Contact(fName, lName, pNum);
+        Tree.remove(person);
         System.out.print("Contact Removed!");
     }
 
+    //viewAllContacts is a method that creates a arraylist through the getAllInOrder method, then it loops through a for loop which
+    //prints out the every contacts information in the arraylist.
     public static void viewAllContacts(BinarySearchTree<Contact> Tree) {
 
         ArrayList<Contact> allPeople = Tree.getAllInOrder();
