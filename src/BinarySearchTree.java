@@ -67,7 +67,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * We added weights to the values of the First and Last names in the Contact class, which are used here to decide where to find the node.
      * In a general since, this class, as it's generic, simply compares the two values till it find the right node to append our name to.
      */
-    public void add(T newData){
+    public void add(T newData) throws DuplicateNodeException{
         if(root == null){
             this.root = new BinaryTreeNode<>(newData);
             return;
@@ -102,7 +102,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Parameters:
      * value (T) The value we're finding for.
      */
-    public T get(T value){
+    public T get(T value) throws NodeNotFoundException{
         return getPreOrder(value).getValue();
     }
 
@@ -113,7 +113,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      *   value (T) The value we're finding for.
      *   searchType (SearchType Enum) The type of tree traversal desired to find the node.
      */
-    public T get(T value, SearchType searchType){
+    public T get(T value, SearchType searchType) throws NodeNotFoundException{
         switch (searchType) {
             case PREORDER:
                 return this.getPreOrder(value).getValue();
@@ -136,7 +136,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Parameters:
      *  value (T) The value we're finding for
     */
-    public BinaryTreeNode<T> getSearch(T value){
+    public BinaryTreeNode<T> getSearch(T value) throws NodeNotFoundException{
         BinaryTreeNode<T> current = root;
         while(current != null){
             int compareVal = current.getValue().compareTo(value);
@@ -165,7 +165,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Parameters:
      *   value (T) The value we're finding for
      */
-    private  BinaryTreeNode<T> getPreOrder(T value){
+    private  BinaryTreeNode<T> getPreOrder(T value) throws NodeNotFoundException{
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         nodeStack.push(root);
         while(!nodeStack.empty()){
@@ -197,7 +197,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Parameters:
      *  value (T) The value we're finding for
      */
-    private BinaryTreeNode<T> getInOrder(T value){
+    private BinaryTreeNode<T> getInOrder(T value) throws NodeNotFoundException{
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;  // Start at our first node.
 
@@ -262,7 +262,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Parameters:
      *  value (T): The value of the node we're looking for.
      */
-    private BinaryTreeNode<T> getPostOrder(T value){
+    private BinaryTreeNode<T> getPostOrder(T value) throws NodeNotFoundException{
         Stack<BinaryTreeNode<T>> nodeStack = new Stack<>();
         Stack<BinaryTreeNode<T>> parentStack = new Stack<>();
         BinaryTreeNode<T> currNode = root;
@@ -324,7 +324,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                 current = current.getRight();
             }
         }
-        throw new NodeNotFoundException();
+        return false;
     }
 
     /*
@@ -334,7 +334,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Parameters:
      *  value (T): The value of the node we're looking for.
      */
-    private BinaryTreeNode<T> getParentNode(T value){
+    private BinaryTreeNode<T> getParentNode(T value) throws NodeNotFoundException{
         BinaryTreeNode<T> parent = null;
         BinaryTreeNode<T> current = root;
         while(current != null){
@@ -360,7 +360,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      * Parameters:
      * value (T): The value of the node we're looking for.
      */
-    public void remove(T value){
+    public void remove(T value) throws NodeNotFoundException{
         BinaryTreeNode<T> removeNode = this.getPostOrder(value);
         if(removeNode.getLeft() == null){
             BinaryTreeNode<T> parent = this.getParentNode(value);
