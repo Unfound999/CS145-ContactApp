@@ -30,6 +30,7 @@ public class ContactMain {
     //all provided data and then adds that contact object to the tree with the add method.
     public static void addContactMain(BinarySearchTree<Contact> Tree) {
         Scanner input = new Scanner(System.in);
+        Scanner intScanner = new Scanner(System.in);
 
         System.out.print("Please provide the first name of the contact:");
         String fName = input.nextLine();
@@ -44,7 +45,7 @@ public class ContactMain {
         while(true)
             try {
                 System.out.print("Please provide the zip code of the contact:");
-                zip = input.nextInt();
+                zip = intScanner.nextInt();
                 break;
             } catch (InputMismatchException e) {
                 System.out.print("Sorry this is an invalid zip code!");

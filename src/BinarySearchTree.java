@@ -362,6 +362,12 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
      */
     public void remove(T value) throws NodeNotFoundException{
         BinaryTreeNode<T> removeNode = this.getPostOrder(value);
+
+        if(removeNode == root){
+            root = null;
+            return;
+        }
+
         if(removeNode.getLeft() == null){
             BinaryTreeNode<T> parent = this.getParentNode(value);
             if(parent.getLeft() == removeNode){
