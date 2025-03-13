@@ -363,10 +363,11 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     public void remove(T value) throws NodeNotFoundException{
         BinaryTreeNode<T> removeNode = this.getPostOrder(value);
 
-        if(removeNode == root && removeNode.getLeft() == null){
+        if(removeNode == root && removeNode.getLeft() == null && removeNode.getRight() == null){
             root = null;
             return;
         }
+
         if(removeNode.getLeft() == null && removeNode != root){
             BinaryTreeNode<T> parent = this.getParentNode(value);
             if(parent.getLeft() == removeNode){
@@ -384,17 +385,20 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
             removeNode.setValue(leftNode.getValue());
             removeNode.setLeft(leftNode.getLeft());
             removeNode = removeNode.getLeft();
+        } else if(removeNode.getRight() != null){
+            BinaryTreeNode<T> rightNode = removeNode.getRight();
+            removeNode.setValue(rightNode.getValue());
+            removeNode.setRight(rightNode.getRight());
+            removeNode = removeNode.getLeft();
         }
-
     }
 
         public static void main(String[] args) throws Exception{
         BinarySearchTree<Contact> tree = new BinarySearchTree<>();
-        tree.add(new Contact("Christopher", "Waschke", "3605948270"));
-        tree.add(new Contact("Brody", "Weinkauf", "3605948271"));
-        tree.add(new Contact("Jackson", "Jenks", "3605948273"));
-
-        tree.remove(new Contact("Brody", "Weinkauf", "3605948271"));
+        tree.add(new Contact("Test1", "Test1", "Test1"));
+        tree.add(new Contact("Test2", "Test2", "Test2"));
+        tree.add(new Contact("Test3", "Test3", "Test3"));
+        tree.remove(new Contact("Test1", "Test1", "Test1"));
         for(Contact x : tree.getAllInOrder()){
             System.out.println(x);
         }
