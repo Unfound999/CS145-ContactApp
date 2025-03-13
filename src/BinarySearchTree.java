@@ -392,15 +392,4 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
             removeNode = removeNode.getLeft();
         }
     }
-
-        public static void main(String[] args) throws Exception{
-        BinarySearchTree<Contact> tree = new BinarySearchTree<>();
-        tree.add(new Contact("Test1", "Test1", "Test1"));
-        tree.add(new Contact("Test2", "Test2", "Test2"));
-        tree.add(new Contact("Test3", "Test3", "Test3"));
-        tree.remove(new Contact("Test1", "Test1", "Test1"));
-        for(Contact x : tree.getAllInOrder()){
-            System.out.println(x);
-        }
-    }
 }
